@@ -1,13 +1,13 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, HTMLAttributes, ElementType } from 'react';
 
-interface GlassPanelProps {
+interface GlassPanelProps extends HTMLAttributes<HTMLElement> {
   children: ReactNode;
   variant?: 'default' | 'subtle' | 'elevated' | 'card';
   className?: string;
-  as?: 'div' | 'section' | 'aside' | 'nav';
-  onClick?: () => void;
+  as?: ElementType;
+  [key: string]: any;
 }
 
 const variantClasses: Record<string, string> = {
@@ -22,12 +22,12 @@ export function GlassPanel({
   variant = 'default',
   className = '',
   as: Component = 'div',
-  onClick,
+  ...props
 }: GlassPanelProps) {
   return (
     <Component
       className={`${variantClasses[variant]} ${className}`}
-      onClick={onClick}
+      {...props}
     >
       {children}
     </Component>

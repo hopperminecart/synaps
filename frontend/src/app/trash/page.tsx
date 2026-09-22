@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { TopBar } from '@/components/TopBar';
+import { GlassPanel } from '@/components/glass/GlassPanel';
 import { getTrash, restoreFromTrash, permanentDelete, getThumbnailUrl } from '@/lib/api';
 import { Trash2, RotateCcw, Clock } from 'lucide-react';
 
@@ -47,11 +48,12 @@ export default function TrashPage() {
         ) : items.length > 0 ? (
           <div className="space-y-2">
             {items.map((item) => (
-              <motion.div
+              <GlassPanel
+                as={motion.div as any}
                 key={item.id}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="flex items-center gap-3 px-4 py-3 rounded-2xl glass-panel"
+                className="flex items-center gap-3 px-4 py-3 rounded-2xl"
               >
                 {item.thumbnail_url ? (
                   <div className="w-10 h-10 rounded-lg overflow-hidden bg-[var(--glass-bg)] shrink-0 border border-[var(--glass-border)]">
@@ -92,7 +94,7 @@ export default function TrashPage() {
                     <Trash2 size={14} className="text-[var(--text-tertiary)] group-hover:text-red-400" />
                   </button>
                 </div>
-              </motion.div>
+              </GlassPanel>
             ))}
           </div>
         ) : (

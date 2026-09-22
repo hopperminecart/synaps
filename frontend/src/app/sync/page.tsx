@@ -3,6 +3,8 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TopBar } from '@/components/TopBar';
+import { GlassPanel } from '@/components/glass/GlassPanel';
+import { GlassButton } from '@/components/glass/GlassButton';
 import {
   uploadFile,
   scanImports,
@@ -173,11 +175,12 @@ function ImportSection() {
   };
 
   return (
-    <motion.div
+    <GlassPanel
+      as={motion.div as any}
+      variant="card"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.1 }}
-      className="glass-card"
     >
       {/* Header */}
       <div className="flex items-center gap-3 mb-5">
@@ -209,10 +212,10 @@ function ImportSection() {
               </div>
             )}
 
-            <button onClick={handleScan} className="w-full btn-accent justify-center py-3" style={{ background: 'linear-gradient(135deg, #10b981, #0d9488)' }}>
+            <GlassButton variant="accent" onClick={handleScan} className="w-full justify-center py-3" style={{ background: 'linear-gradient(135deg, #10b981, #0d9488)' }}>
               <Scan size={16} />
               Scan Imports
-            </button>
+            </GlassButton>
           </motion.div>
         )}
 
@@ -254,10 +257,10 @@ function ImportSection() {
               <span className="text-[11px] text-[var(--text-tertiary)]">total size</span>
             </div>
 
-            <button onClick={handlePreview} className="w-full btn-accent justify-center py-3" style={{ background: 'linear-gradient(135deg, #10b981, #0d9488)' }}>
+            <GlassButton variant="accent" onClick={handlePreview} className="w-full justify-center py-3" style={{ background: 'linear-gradient(135deg, #10b981, #0d9488)' }}>
               <FolderInput size={16} />
               Preview Import
-            </button>
+            </GlassButton>
           </motion.div>
         )}
 
@@ -313,10 +316,10 @@ function ImportSection() {
               <button onClick={handleReset} className="flex-1 px-4 py-3 rounded-xl text-[13px] font-medium text-[var(--text-secondary)] bg-[var(--glass-bg)] hover:bg-[var(--glass-bg-hover)] transition-all border border-[var(--glass-border)]">
                 Cancel
               </button>
-              <button onClick={handleExecute} className="flex-[2] btn-accent justify-center py-3" style={{ background: 'linear-gradient(135deg, #10b981, #0d9488)' }}>
+              <GlassButton variant="accent" onClick={handleExecute} className="flex-[2] justify-center py-3" style={{ background: 'linear-gradient(135deg, #10b981, #0d9488)' }}>
                 <FolderInput size={16} />
                 Start Import
-              </button>
+              </GlassButton>
             </div>
           </motion.div>
         )}
@@ -429,7 +432,7 @@ function ImportSection() {
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.div>
+    </GlassPanel>
   );
 }
 
@@ -508,11 +511,12 @@ export default function SyncPage() {
         <ImportSection />
 
         {/* ── iPhone Sync Section ── */}
-        <motion.div
+        <GlassPanel
+          as={motion.div as any}
+          variant="card"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="glass-card"
         >
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--accent)] to-[var(--accent-dark)] flex items-center justify-center shadow-lg shadow-[var(--accent-glow)]">
@@ -547,7 +551,7 @@ export default function SyncPage() {
               onChange={(e) => handleFiles(e.target.files)}
             />
           </div>
-        </motion.div>
+        </GlassPanel>
 
         {/* Upload queue */}
         {uploads.length > 0 && (
@@ -560,10 +564,11 @@ export default function SyncPage() {
                 {stats.duplicate > 0 && <span className="text-amber-400">{stats.duplicate} duplicates</span>}
                 {stats.error > 0 && <span className="text-red-400">{stats.error} failed</span>}
               </div>
-              <button
+              <GlassButton
+                variant="accent"
                 onClick={startUpload}
                 disabled={isUploading || stats.pending === 0}
-                className="btn-accent text-[12px] py-2 px-4"
+                className="text-[12px] py-2 px-4"
               >
                 {isUploading ? (
                   <span className="flex items-center gap-2">
@@ -572,7 +577,7 @@ export default function SyncPage() {
                 ) : (
                   `Upload ${stats.pending} files`
                 )}
-              </button>
+              </GlassButton>
             </div>
 
             {/* File list */}

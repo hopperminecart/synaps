@@ -16,7 +16,7 @@ interface TopBarProps {
 }
 
 const viewOptions = [
-  { key: 'timeline', label: 'Timeline' },
+  { key: 'timeline', label: 'Months' },
   { key: 'gallery', label: 'All Photos' },
 ];
 
@@ -32,13 +32,10 @@ export function TopBar({
 
   return (
     <header
-      className="sticky top-0 z-20 px-4 lg:px-6 py-3
-        bg-[var(--bg-deep)]/60
-        backdrop-blur-2xl"
+      className="sticky top-0 z-20 px-4 lg:px-6 py-4
+        bg-[var(--bg-deep)]/70 backdrop-blur-[20px]"
       style={{
-        background: 'rgba(12, 10, 26, 0.6)',
-        backdropFilter: 'blur(40px) saturate(180%)',
-        WebkitBackdropFilter: 'blur(40px) saturate(180%)',
+        WebkitBackdropFilter: 'blur(20px)',
       }}
     >
       <div className="flex items-center justify-between gap-4">
@@ -51,11 +48,11 @@ export function TopBar({
             <Menu size={20} className="text-[var(--text-secondary)]" />
           </button>
           <div className="min-w-0">
-            <h1 className="text-xl font-bold tracking-tight text-[var(--text-primary)] truncate">
+            <h1 className="text-3xl font-extrabold tracking-tight text-[var(--text-primary)] truncate">
               {title}
             </h1>
             {subtitle && (
-              <p className="text-[11px] text-[var(--text-tertiary)] mt-0.5 truncate">{subtitle}</p>
+              <p className="text-xs font-medium text-[var(--text-tertiary)] mt-0.5 truncate">{subtitle}</p>
             )}
           </div>
         </div>

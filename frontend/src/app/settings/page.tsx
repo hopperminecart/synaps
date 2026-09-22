@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { useTheme } from 'next-themes';
 import { TopBar } from '@/components/TopBar';
+import { GlassPanel } from '@/components/glass/GlassPanel';
+import { GlassButton } from '@/components/glass/GlassButton';
 import { getSettings, updateSettings, getStorageUsage, triggerScan } from '@/lib/api';
 import {
   HardDrive, Image, Film, FileText, Trash2,
@@ -13,9 +16,11 @@ export default function SettingsPage() {
   const [settings, setSettings] = useState<any>({});
   const [usage, setUsage] = useState<any>(null);
   const [scanning, setScanning] = useState(false);
-  const [theme, setThemeState] = useState('dark');
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     getSettings().then(setSettings).catch(console.error);
     getStorageUsage().then(setUsage).catch(console.error);
   }, []);
@@ -35,14 +40,7 @@ export default function SettingsPage() {
   };
 
   const handleThemeChange = (newTheme: string) => {
-    setThemeState(newTheme);
-    document.documentElement.classList.remove('light', 'dark');
-    if (newTheme === 'system') {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      document.documentElement.classList.add(prefersDark ? 'dark' : 'light');
-    } else {
-      document.documentElement.classList.add(newTheme);
-    }
+    setTheme(newTheme);
     updateSettings({ theme: newTheme });
   };
 
@@ -58,10 +56,11 @@ export default function SettingsPage() {
 
       <div className="px-4 lg:px-6 py-6 max-w-2xl mx-auto space-y-5">
         {/* Storage Usage */}
-        <motion.section
+        <GlassPanel
+          as={motion.section as any}
+          variant="card"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="glass-card"
         >
           <h2 className="text-[13px] font-semibold text-[var(--text-primary)] mb-4 flex items-center gap-2">
             <HardDrive size={16} className="text-[var(--accent)]" />
@@ -105,14 +104,15 @@ export default function SettingsPage() {
               </div>
             </div>
           )}
-        </motion.section>
+        </GlassPanel>
 
         {/* Theme */}
-        <motion.section
+        <GlassPanel
+          as={motion.section as any}
+          variant="card"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="glass-card"
         >
           <h2 className="text-[13px] font-semibold text-[var(--text-primary)] mb-4">
             Appearance
@@ -120,7 +120,7 @@ export default function SettingsPage() {
           <div className="flex gap-3">
             {themes.map((t) => {
               const Icon = t.icon;
-              const isActive = theme === t.key;
+              const isActive = mounted && theme === t.key;
               return (
                 <button
                   key={t.key}
@@ -137,14 +137,15 @@ export default function SettingsPage() {
               );
             })}
           </div>
-        </motion.section>
+        </GlassPanel>
 
         {/* Scan */}
-        <motion.section
+        <GlassPanel
+          as={motion.section as any}
+          variant="card"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="glass-card"
         >
           <h2 className="text-[13px] font-semibold text-[var(--text-primary)] mb-2 flex items-center gap-2">
             <FolderSearch size={16} className="text-[var(--accent)]" />
@@ -153,10 +154,10 @@ export default function SettingsPage() {
           <p className="text-[12px] text-[var(--text-tertiary)] mb-4">
             Rescan your NAS to index new files and generate thumbnails.
           </p>
-          <button
+          <GlassButton
+            variant="accent"
             onClick={handleScan}
             disabled={scanning}
-            className="btn-accent"
           >
             {scanning ? (
               <>
@@ -169,15 +170,16 @@ export default function SettingsPage() {
                 Rescan Now
               </>
             )}
-          </button>
-        </motion.section>
+          </GlassButton>
+        </GlassPanel>
 
         {/* Paths */}
-        <motion.section
+        <GlassPanel
+          as={motion.section as any}
+          variant="card"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="glass-card"
         >
           <h2 className="text-[13px] font-semibold text-[var(--text-primary)] mb-4">
             Configuration
@@ -196,7 +198,7 @@ export default function SettingsPage() {
               </div>
             ))}
           </div>
-        </motion.section>
+        </GlassPanel>
 
         {/* About */}
         <motion.section

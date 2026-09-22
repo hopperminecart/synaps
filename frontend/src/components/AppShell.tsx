@@ -12,8 +12,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <Sidebar />
       <MediaViewer />
       <main
-        className={`min-h-screen transition-all duration-300 ease-out
-          ${sidebarOpen ? 'lg:ml-[var(--sidebar-width)]' : ''}`}
+        className="min-h-screen transition-all duration-300 ease-out lg:ml-[calc(var(--sidebar-width)+16px)]"
       >
         {children}
       </main>

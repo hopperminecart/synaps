@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { TopBar } from '@/components/TopBar';
 import { browseDirectory, getThumbnailUrl } from '@/lib/api';
+import { GlassPanel } from '@/components/glass/GlassPanel';
+import { GlassButton } from '@/components/glass/GlassButton';
 import { useAppStore } from '@/lib/store';
 import {
   Folder, FolderOpen, FileText, Image, Film, File,
@@ -94,16 +96,16 @@ export default function FinderPage() {
           <div>
             {/* Back button */}
             {currentPath && (
-              <button
+              <GlassButton
+                variant="ghost"
                 onClick={() => {
                   const parent = currentPath.split('/').slice(0, -1).join('/');
                   navigate(parent);
                 }}
-                className="flex items-center gap-2 mb-5 px-3 py-2 rounded-xl text-sm
-                  text-[var(--text-secondary)] hover:bg-[var(--glass-bg-hover)] transition-colors"
+                className="flex items-center gap-2 mb-5 text-sm"
               >
                 <ArrowLeft size={16} /> Back
-              </button>
+              </GlassButton>
             )}
 
             {/* Folders */}
@@ -114,13 +116,12 @@ export default function FinderPage() {
                 </h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
                   {data.folders.map((folder: any) => (
-                    <motion.button
+                    <GlassPanel
                       key={folder.path}
+                      as="button"
                       onClick={() => navigate(folder.path)}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
                       className="flex flex-col items-center gap-2 p-4 rounded-2xl
-                        glass-panel glass-hover group transition-all duration-200"
+                        glass-hover group transition-all duration-200"
                     >
                       <Folder size={32} className="text-[var(--accent)] group-hover:text-[var(--accent-light)] transition-colors" />
                       <span className="text-[11px] font-medium text-[var(--text-secondary)] truncate w-full text-center">
@@ -129,7 +130,7 @@ export default function FinderPage() {
                       <span className="text-[10px] text-[var(--text-tertiary)]">
                         {folder.children_count} items
                       </span>
-                    </motion.button>
+                    </GlassPanel>
                   ))}
                 </div>
               </div>

@@ -4,7 +4,6 @@ import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TopBar } from '@/components/TopBar';
 import { MediaGrid } from '@/components/MediaGrid';
-import { GlassToolbar, ToolbarButton, ToolbarDivider } from '@/components/glass/GlassToolbar';
 import { useAppStore } from '@/lib/store';
 import { getMedia, getMediaStats } from '@/lib/api';
 import { ChevronRight, ChevronDown, LayoutGrid, List, Heart, Share2, Trash2, Grid3X3 } from 'lucide-react';
@@ -176,9 +175,9 @@ export default function MediaBrowser() {
     return () => observer.disconnect();
   }, [hasMore, loading, loadingMore, fetchPage]);
 
-  // Gallery Sticky Date Observer
+  // Sticky Date Observer
   useEffect(() => {
-    if (activeView !== 'gallery' || galleryItems.length === 0) return;
+    if (timelineGroups.length === 0 && galleryItems.length === 0) return;
 
     const handleScroll = () => {
       const elements = document.querySelectorAll('[data-date]');
@@ -186,7 +185,7 @@ export default function MediaBrowser() {
 
       for (let i = 0; i < elements.length; i++) {
         const rect = elements[i].getBoundingClientRect();
-        if (rect.top <= 120) {
+        if (rect.top <= 140) {
           activeDate = elements[i].getAttribute('data-date');
         } else {
           break;
@@ -204,7 +203,7 @@ export default function MediaBrowser() {
     setTimeout(handleScroll, 100);
 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [activeView, galleryItems]);
+  }, [timelineGroups, galleryItems]);
 
   const toggleYear = (year: number) => {
     setCollapsedYears(prev => {
@@ -228,44 +227,20 @@ export default function MediaBrowser() {
     <div className="min-h-screen pb-24">
       <TopBar
         title="Library"
-        subtitle={stats ? `${stats.total_files.toLocaleString()} items · ${stats.total_size_human}` : undefined}
+        subtitle={activeDateHeader || (stats ? `${stats.total_files.toLocaleString()} items · ${stats.total_size_human}` : undefined)}
         showViewControls
         showSourcesButton
       />
 
-      {/* Gallery Sticky Date Overlay */}
-      <AnimatePresence>
-        {activeView === 'gallery' && activeDateHeader && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -5 }}
-            className="fixed top-20 left-1/2 -translate-x-1/2 z-40"
-          >
-            <div
-              className="px-5 py-1.5 rounded-full text-[13px] font-medium text-[var(--text-primary)] shadow-2xl"
-              style={{
-                background: 'rgba(20, 18, 40, 0.7)',
-                backdropFilter: 'blur(40px) saturate(200%)',
-                WebkitBackdropFilter: 'blur(40px) saturate(200%)',
-                border: '1px solid var(--glass-border-light)',
-              }}
-            >
-              {activeDateHeader}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       <div className="px-4 lg:px-5 pb-8 mt-2">
         {activeView === 'timeline' ? (
           /* ═══ TIMELINE VIEW ═══ */
-          <div className="space-y-6">
+          <div className="space-y-12">
             {yearGroups.map((yearGroup) => {
               const yearCollapsed = collapsedYears.has(yearGroup.year);
 
               return (
-                <div key={yearGroup.year} className="space-y-3">
+                <div key={yearGroup.year} className="space-y-6">
                   {/* Year Header */}
                   <div className="flex items-center gap-3 w-full group">
                     <button
@@ -280,7 +255,7 @@ export default function MediaBrowser() {
                       >
                         <ChevronRight size={14} className="text-[var(--text-tertiary)]" />
                       </motion.div>
-                      <h1 className="text-2xl font-bold tracking-tight text-[var(--text-primary)]">
+                      <h1 className="text-3xl font-bold tracking-tight text-[var(--text-primary)]">
                         {yearGroup.year === 0 ? 'Old Photos' : yearGroup.year}
                       </h1>
                     </button>
@@ -308,13 +283,8 @@ export default function MediaBrowser() {
                             <section key={key} style={{ contentVisibility: 'auto' }}>
                               <button
                                 onClick={() => toggleMonth(key)}
-                                className="month-header flex items-center gap-2.5 group/month w-full text-left
+                                className="month-header py-1 flex items-center gap-2.5 group/month w-full text-left
                                   focus:outline-none"
-                                style={{
-                                  background: 'rgba(12, 10, 26, 0.5)',
-                                  backdropFilter: 'blur(20px)',
-                                  WebkitBackdropFilter: 'blur(20px)',
-                                }}
                               >
                                 <motion.div
                                   animate={{ rotate: monthExpanded ? 90 : 0 }}
@@ -375,15 +345,6 @@ export default function MediaBrowser() {
         </div>
       </div>
 
-      {/* ═══ FLOATING BOTTOM TOOLBAR ═══ */}
-      <GlassToolbar visible={!loading && (timelineGroups.length > 0 || galleryItems.length > 0)}>
-        <ToolbarButton icon={<LayoutGrid size={16} />} label="Grid View" active={activeView === 'gallery'} />
-        <ToolbarButton icon={<List size={16} />} label="Timeline View" active={activeView === 'timeline'} />
-        <ToolbarDivider />
-        <ToolbarButton icon={<Heart size={16} />} label="Favorites" />
-        <ToolbarButton icon={<Share2 size={16} />} label="Share" />
-        <ToolbarButton icon={<Trash2 size={16} />} label="Delete" danger />
-      </GlassToolbar>
     </div>
   );
 }

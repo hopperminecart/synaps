@@ -12,28 +12,28 @@ const config: Config = {
       colors: {
         // Deep background tones
         deep: {
-          DEFAULT: "#0c0a1a",
-          surface: "#110e24",
-          elevated: "#1a1535",
+          DEFAULT: "#000000",
+          surface: "#1e1e1e",
+          elevated: "#2d2d2d",
         },
         // Glass tokens
         glass: {
-          bg: "rgba(255, 255, 255, 0.05)",
-          "bg-hover": "rgba(255, 255, 255, 0.08)",
-          "bg-active": "rgba(255, 255, 255, 0.12)",
-          "bg-elevated": "rgba(255, 255, 255, 0.07)",
-          "bg-sidebar": "rgba(255, 255, 255, 0.04)",
-          border: "rgba(255, 255, 255, 0.08)",
-          "border-light": "rgba(255, 255, 255, 0.12)",
-          highlight: "rgba(255, 255, 255, 0.06)",
+          bg: "rgba(255, 255, 255, 0.02)",
+          "bg-hover": "rgba(255, 255, 255, 0.05)",
+          "bg-active": "rgba(255, 255, 255, 0.08)",
+          "bg-elevated": "rgba(255, 255, 255, 0.06)",
+          "bg-sidebar": "rgba(255, 255, 255, 0)",
+          border: "rgba(255, 255, 255, 0.05)",
+          "border-light": "rgba(255, 255, 255, 0.1)",
+          highlight: "rgba(255, 255, 255, 0.03)",
         },
-        // Primary accent — Synaps blue
+        // Primary accent — Apple Blue
         accent: {
-          DEFAULT: "#6c8aff",
-          light: "#8da4ff",
-          dark: "#4c6ef5",
-          glow: "rgba(108, 138, 255, 0.2)",
-          muted: "rgba(108, 138, 255, 0.12)",
+          DEFAULT: "#0a84ff",
+          light: "#5e94ff",
+          dark: "#0060d1",
+          glow: "rgba(10, 132, 255, 0)",
+          muted: "rgba(10, 132, 255, 0.15)",
         },
         // Semantic text
         txt: {

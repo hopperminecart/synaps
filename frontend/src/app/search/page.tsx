@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TopBar } from '@/components/TopBar';
 import { searchMedia, getSearchSuggestions, getThumbnailUrl } from '@/lib/api';
+import { GlassPanel } from '@/components/glass/GlassPanel';
 import { useAppStore } from '@/lib/store';
 import {
   Search as SearchIcon, X, Image, Film, FileText,
@@ -92,11 +93,13 @@ export default function SearchPage() {
           {/* Suggestions dropdown — glass */}
           <AnimatePresence>
             {showSuggestions && (suggestions.files.length > 0 || suggestions.directories.length > 0) && (
-              <motion.div
+              <GlassPanel
+                as={motion.div as any}
+                variant="elevated"
                 initial={{ opacity: 0, y: -4 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -4 }}
-                className="absolute top-full left-0 right-0 mt-2 rounded-2xl overflow-hidden z-30 glass-panel-elevated"
+                className="absolute top-full left-0 right-0 mt-2 rounded-2xl overflow-hidden z-30"
               >
                 {suggestions.directories.map((dir) => (
                   <button
@@ -121,7 +124,7 @@ export default function SearchPage() {
                     <span className="text-[var(--text-secondary)] truncate">{file}</span>
                   </button>
                 ))}
-              </motion.div>
+              </GlassPanel>
             )}
           </AnimatePresence>
         </div>

@@ -25,6 +25,7 @@ dist/
 .next/
 out/
 next-env.d.ts
+*.tsbuildinfo
 
 # 4. Database & Indexes
 *.db
@@ -43,7 +44,7 @@ trash/
 cache/
 .cache/
 
-# 6. Logs & Temp Files
+# 6. Logs, Reports & Temp Files
 *.log
 logs/
 tmp/
@@ -53,8 +54,23 @@ temp/
 *.swp
 *.swo
 *~
+*.report.json
+duplicates_report.txt
 
-# 7. IDE & OS Files
+# 7. Security, Credentials & Personal Migration Scripts
+*.pem
+*.key
+*.pub
+id_*
+setup_ssh*.py
+test_scp.py
+verify_nas.py
+sync_*.py
+detect_origin.py
+private/
+personal/
+
+# 8. IDE & OS Files
 .vscode/
 .idea/
 .DS_Store
